@@ -310,8 +310,38 @@ h3 {
     height: 100%;
 }
 
-.map-pin {
+.map-pin-container {
     position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.scenario-progress-bar {
+    display: flex;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 8px;
+    border-radius: 10px;
+    border: 2px solid rgba(74, 158, 255, 0.5);
+}
+
+.progress-segment {
+    width: 20px;
+    height: 8px;
+    background: rgba(100, 100, 100, 0.5);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.progress-segment.completed {
+    background: linear-gradient(135deg, #4a9eff 0%, #2d7ecc 100%);
+    box-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
+}
+
+.map-pin {
     width: 40px;
     height: 40px;
     background: #4a9eff;

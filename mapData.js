@@ -2,9 +2,9 @@
 const MAP_LOCATIONS = [
     {
         id: 'loc_entrance',
-        scenarioId: 'scenario_01',
+        scenarioId: 'scenario_01-1',
         x: 50,
-        y: 80,
+        y: 60,  // 80から60に変更（上に移動）
         unlocked: true
     },
     {

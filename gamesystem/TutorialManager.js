@@ -73,20 +73,43 @@ class TutorialManager {
 
     // チュートリアル完了
     completeTutorial() {
-        // チュートリアル完了フラグを立てる
-        this.game.state.tutorialCompleted = true;
-        
-        // 初期シナリオをアンロック
-        this.game.state.unlockScenario('scenario_01');
-        this.game.state.unlockCharacter('hitoyo');
-        this.game.state.favoriteCharacter = 'hitoyo';
-        this.game.state.currentObjective = SCENARIOS[0].objective;
-        
-        // マップ位置を初期化
-        this.game.state.mapLocations = MAP_LOCATIONS.filter(loc => loc.unlocked);
-        
-        this.game.state.saveState();
-        this.game.screenManager.showScreen('game');
-        this.game.updateHome();
+        try {
+            console.log('チュートリアル完了処理開始');
+            
+            // チュートリアル完了フラグを立てる
+            this.game.state.tutorialCompleted = true;
+            
+            // 初期シナリオをアンロック（シナリオ1-1）
+            this.game.state.unlockScenario('scenario_01-1');
+            this.game.state.unlockCharacter('hitoyo');
+            this.game.state.favoriteCharacter = 'hitoyo';
+            
+            // SCENARIOSが存在するか確認
+            if (typeof SCENARIOS !== 'undefined' && SCENARIOS.length > 0) {
+                this.game.state.currentObjective = SCENARIOS[0].objective;
+            } else {
+                console.error('SCENARIOS が定義されていません');
+                this.game.state.currentObjective = '拷問屋を調査する';
+            }
+            
+            // マップ位置を初期化
+            if (typeof MAP_LOCATIONS !== 'undefined') {
+                this.game.state.mapLocations = MAP_LOCATIONS.filter(loc => loc.unlocked);
+            } else {
+                console.error('MAP_LOCATIONS が定義されていません');
+                this.game.state.mapLocations = [];
+            }
+            
+            this.game.state.saveState();
+            console.log('ゲーム画面に遷移');
+            this.game.screenManager.showScreen('game');
+            
+            // ホームコンテンツを明示的に表示
+            this.game.screenManager.switchContent('home');
+            
+            console.log('チュートリアル完了処理終了');
+        } catch (error) {
+            console.error('チュートリアル完了処理でエラー:', error);
+        }
     }
 }

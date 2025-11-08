@@ -11,6 +11,7 @@ class GameState {
         this.currentObjective = '';
         this.mapLocations = [];
         this.playingScenarioId = null; // 再生中のシナリオID（リロード対策）
+        this.scenarioProgress = {}; // シナリオごとの進捗（セクション番号）
         this.loadState();
     }
 
@@ -20,6 +21,10 @@ class GameState {
         if (saved) {
             const data = JSON.parse(saved);
             Object.assign(this, data);
+        }
+        // scenarioProgressが存在しない場合は初期化
+        if (!this.scenarioProgress) {
+            this.scenarioProgress = {};
         }
     }
 
@@ -35,7 +40,8 @@ class GameState {
             favoriteCharacter: this.favoriteCharacter,
             currentObjective: this.currentObjective,
             mapLocations: this.mapLocations,
-            playingScenarioId: this.playingScenarioId
+            playingScenarioId: this.playingScenarioId,
+            scenarioProgress: this.scenarioProgress
         }));
     }
 
@@ -61,5 +67,18 @@ class GameState {
             this.unlockedCharacters.push(characterId);
             this.saveState();
         }
+    }
+
+    // シナリオ進捗を更新
+    updateScenarioProgress(scenarioId, section) {
+        if (!this.scenarioProgress[scenarioId] || this.scenarioProgress[scenarioId] < section) {
+            this.scenarioProgress[scenarioId] = section;
+            this.saveState();
+        }
+    }
+
+    // シナリオ進捗を取得
+    getScenarioProgress(scenarioId) {
+        return this.scenarioProgress[scenarioId] || 0;
     }
 }

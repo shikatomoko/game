@@ -49,13 +49,38 @@ class ContentManager {
 
         MAP_LOCATIONS.forEach(location => {
             if (this.game.state.mapLocations.some(loc => loc.id === location.id)) {
+                const pinContainer = document.createElement('div');
+                pinContainer.className = 'map-pin-container';
+                pinContainer.style.left = location.x + '%';
+                pinContainer.style.top = location.y + '%';
+                
+                // シナリオ情報を取得
+                const scenario = SCENARIOS.find(s => s.id === location.scenarioId);
+                const isCompleted = this.game.state.completedScenarios.includes(location.scenarioId);
+                
+                // 進捗バーを表示（セクションがあるシナリオの場合）
+                if (scenario && scenario.sections && !isCompleted) {
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'scenario-progress-bar';
+                    
+                    const currentProgress = this.game.state.getScenarioProgress(location.scenarioId);
+                    
+                    for (let i = 1; i <= scenario.sections; i++) {
+                        const segment = document.createElement('div');
+                        segment.className = 'progress-segment';
+                        if (i <= currentProgress) {
+                            segment.classList.add('completed');
+                        }
+                        progressBar.appendChild(segment);
+                    }
+                    
+                    pinContainer.appendChild(progressBar);
+                }
+                
                 const pin = document.createElement('div');
                 pin.className = 'map-pin';
-                pin.style.left = location.x + '%';
-                pin.style.top = location.y + '%';
                 pin.textContent = '📍';
                 
-                const isCompleted = this.game.state.completedScenarios.includes(location.scenarioId);
                 if (isCompleted) {
                     pin.classList.add('completed');
                 }
@@ -66,7 +91,8 @@ class ContentManager {
                     }
                 });
 
-                mapPins.appendChild(pin);
+                pinContainer.appendChild(pin);
+                mapPins.appendChild(pinContainer);
             }
         });
     }

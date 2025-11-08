@@ -69,6 +69,11 @@ class ScenarioManager {
         // 立ち絵を設定（配列対応）
         this.renderSprites('scenario-sprites', line.sprite);
         
+        // セクション進捗を更新
+        if (line.section && !this.isPlayingTutorial) {
+            this.game.state.updateScenarioProgress(this.currentScenario.id, line.section);
+        }
+        
         // カメラボタンの表示制御
         const cameraBtn = document.getElementById('camera-btn');
         if (line.cameraEnabled && !this.photoTaken) {
