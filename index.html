@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ホーム</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- チュートリアル画面 -->
+    <div id="tutorial-screen" class="screen active">
+        <div class="scene-background" id="tutorial-background"></div>
+        <div class="character-sprites" id="tutorial-sprites"></div>
+        <div class="dialog-box">
+            <div class="character-name" id="tutorial-name">ヒトヨ</div>
+            <div class="dialog-text" id="tutorial-text"></div>
+            <button id="tutorial-next" class="btn-primary">次へ</button>
+        </div>
+    </div>
+
+    <!-- メインゲーム画面 -->
+    <div id="game-screen" class="screen">
+        <!-- 背景エリア -->
+        <div id="game-background" class="game-background"></div>
+
+        <!-- コンテンツエリア -->
+        <div id="content-area" class="content-area">
+            <!-- ホーム画面 -->
+            <div id="home-content" class="content active">
+                <h2>ホーム</h2>
+                
+                <!-- 次の目標 -->
+                <div class="home-section objective-section">
+                    <h3>次の目標</h3>
+                    <div id="next-objective" class="objective-text"></div>
+                </div>
+                
+                <!-- 解放済みシナリオ -->
+                <div class="home-section">
+                    <h3>解放済みシナリオ</h3>
+                    <div id="unlocked-scenarios" class="scenario-list"></div>
+                </div>
+                
+                <!-- お気に入りキャラクター -->
+                <div class="home-section favorite-section">
+                    <h3>お気に入りキャラクター</h3>
+                    <div class="favorite-container">
+                        <div id="favorite-sprite" class="favorite-sprite"></div>
+                        <div class="favorite-message-container">
+                            <div id="favorite-message" class="character-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 探索(マップ)画面 -->
+            <div id="map-content" class="content">
+                <h2>探索</h2>
+                <div id="map-area" class="map-area">
+                    <img src="images/other/map.png" alt="マップ" class="map-image" id="map-image">
+                    <div id="map-pins" class="map-pins"></div>
+                </div>
+            </div>
+
+            <!-- 録音データ画面 -->
+            <div id="audio-content" class="content">
+                <h2>録音データ</h2>
+                <div id="scenario-log" class="log-list"></div>
+            </div>
+
+            <!-- カメラデータ画面 -->
+            <div id="camera-content" class="content">
+                <h2>カメラデータ</h2>
+                <div id="character-gallery" class="gallery"></div>
+            </div>
+        </div>
+
+        <!-- 下部メニュー -->
+        <nav id="bottom-menu" class="bottom-menu">
+            <button class="menu-btn active" data-content="home">
+                <span class="menu-icon">🏠</span>
+                <span class="menu-label">ホーム</span>
+            </button>
+            <button class="menu-btn" data-content="map">
+                <span class="menu-icon">🗺️</span>
+                <span class="menu-label">探索</span>
+            </button>
+            <button class="menu-btn" data-content="audio">
+                <span class="menu-icon">🎙️</span>
+                <span class="menu-label">録音データ</span>
+            </button>
+            <button class="menu-btn" data-content="camera">
+                <span class="menu-icon">📷</span>
+                <span class="menu-label">カメラデータ</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- 調査(シナリオ再生)画面 -->
+    <div id="scenario-screen" class="screen">
+        <div class="scene-background" id="scenario-background"></div>
+        <div class="character-sprites" id="scenario-sprites"></div>
+        
+        <!-- 写真撮影ボタン -->
+        <button id="camera-btn" class="camera-btn" style="display: none;">📷 写真を撮る</button>
+        
+        <div class="scenario-box">
+            <div class="dialog-box">
+                <div class="character-name" id="scenario-name"></div>
+                <div class="dialog-text" id="scenario-text"></div>
+                <button id="scenario-next" class="btn-primary">次へ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 写真確認ダイアログ -->
+    <div id="photo-confirm-dialog" class="modal">
+        <div class="modal-content photo-confirm">
+            <div class="modal-header">
+                <h2>📷 過去データ発見</h2>
+            </div>
+            <div class="modal-body">
+                <p id="photo-confirm-text" class="photo-confirm-text"></p>
+                <div class="photo-confirm-buttons">
+                    <button id="photo-confirm-yes" class="btn-primary">再生する</button>
+                    <button id="photo-confirm-no" class="btn-secondary">キャンセル</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- オーバーレイ -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- テキストログモーダル -->
+    <div id="text-log-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="text-log-title">録音データ</h2>
+                <button id="close-text-log" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="text-log-content" class="text-log-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <!-- データファイル -->
+    <script src="tutorialData.js"></script>
+    <script src="characterData.js"></script>
+    <script src="scenarios/scenario_01.js"></script>
+    <script src="scenarios/scenario_02.js"></script>
+    <script src="scenarios/scenario_03.js"></script>
+    <script src="scenarios/scenario_04.js"></script>
+    <script src="scenarios/scenario_05.js"></script>
+    <script src="scenarioData.js"></script>
+    <script src="mapData.js"></script>
+    <script src="textLogData.js"></script>
+    
+    <!-- ゲームシステム -->
+    <script src="gamesystem/GameState.js"></script>
+    <script src="gamesystem/ScreenManager.js"></script>
+    <script src="gamesystem/TutorialManager.js"></script>
+    <script src="gamesystem/ScenarioManager.js"></script>
+    <script src="gamesystem/ContentManager.js"></script>
+    <script src="gamesystem/Game.js"></script>
+</body>
+</html>
